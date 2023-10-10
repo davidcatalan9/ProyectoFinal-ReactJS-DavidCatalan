@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import products from '../data/products';
+import "./Catalog.css";
 
 function ProductDetail() {
   const { id: productId } = useParams();
 
   const [product, setProduct] = useState(null);
+  
   
 
   useEffect(() => {
@@ -20,7 +22,7 @@ function ProductDetail() {
 
   return (
     <div>
-      {product.id}
+      <h4>{product.id}</h4> 
       <h2>Marca: {product.marca} </h2>
       <h3>Nombre: {product.name}</h3>
       <h4>Precio: {product.precio}</h4>

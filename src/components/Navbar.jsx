@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import { Nav, Navbar as BootstrapNavbar, NavDropdown } from 'react-bootstrap';
 import { FaShoppingCart } from 'react-icons/fa';
 const cartCount = 0;
@@ -30,10 +30,12 @@ function Navbar() {
                 Rolex
               </NavDropdown.Item>
             </NavDropdown>
-            <Link className="nav-link" to="/cart">
-              <FaShoppingCart /> {/* Icono de carrito */}
-              <span className="badge badge-danger">{cartCount}</span> {/* Cantidad de elementos en el carrito */}
-            </Link> 
+            
+            <Link className="nav-link ml-auto" to="/cart">
+              <FaShoppingCart style={{ fontSize: '24px' }} /> 
+              <span className="badge badge-danger" style={{ fontSize: '16px' }}>{cartCount}</span> 
+            </Link>
+
           </Nav>
         </BootstrapNavbar.Collapse>
       </BootstrapNavbar>

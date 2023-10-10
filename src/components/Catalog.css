@@ -1,0 +1,8 @@
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Define el tamaño de las columnas */
+    gap: 20px; /* Espacio entre elementos */
+    justify-items: center; /* Centra horizontalmente los elementos */
+    align-items: start; /* Alinea los elementos en la parte superior */
+  }
+  
