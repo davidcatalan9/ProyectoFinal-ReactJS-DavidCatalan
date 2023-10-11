@@ -6,7 +6,7 @@ import { FaShoppingCart } from 'react-icons/fa';
 const cartCount = 0;
 
 
-function Navbar() {
+function Navbar({carroCount}) {
   return (
     <div>
       <BootstrapNavbar bg="success" expand="lg" className='p-2 m-3' >
@@ -33,7 +33,7 @@ function Navbar() {
             
             <Link className="nav-link ml-auto" to="/cart">
               <FaShoppingCart style={{ fontSize: '24px' }} /> 
-              <span className="badge badge-danger" style={{ fontSize: '16px' }}>{cartCount}</span> 
+              <span className="badge badge-danger" style={{ fontSize: '16px' }}>{carroCount}</span> 
             </Link>
 
           </Nav>

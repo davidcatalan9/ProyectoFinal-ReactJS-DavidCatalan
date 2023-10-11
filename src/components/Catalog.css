@@ -6,3 +6,15 @@
     align-items: start; /* Alinea los elementos en la parte superior */
   }
   
+  .cartContent {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin: 30px;
+  }
+
+  .cartContent > img {
+    height: 120px;
+    width: 120px;
+    text-align: center;
+  }
