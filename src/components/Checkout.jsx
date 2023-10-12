@@ -29,8 +29,8 @@ const Checkout = ({ cart, calcularTotal, onCheckout }) => {
         onCheckout(order);
     };
 
-    return (
-        <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
+    return ( 
+        <div className="d-flex p-2 justify-content-center align-items-center bg-success p-2" style={{ width: '30%', minHeight: '35vh'  }}>
             <form onSubmit={handleSubmit} style={{ width: '300px' }}>
                 <h2>Formulario de compra</h2>
                 <div className="mb-3">

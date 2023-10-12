@@ -63,10 +63,10 @@ const CartContent = ({ carro, actualizarCarroCount }) => {
               <h4>{producto.id}</h4>
               <h4>{producto.name}</h4>
               <p>Precio: ${producto.precio}</p>
-              <button onClick={() => sumarCantidad(producto)}>+</button>
-              <p>Cantidad: {producto.cantidad}</p>
-              <button onClick={() => restarCantidad(producto)}>-</button>
-              <button onClick={() => eliminarProducto(producto)}>Eliminar</button>
+              <button className='btn btn-warning' onClick={() => sumarCantidad(producto)}>+</button>
+              <p className='bg-success p-2 text-white bg-opacity-75'>Cantidad: {producto.cantidad}</p>
+              <button className='btn btn-warning' onClick={() => restarCantidad(producto)}>-</button>
+              <button className='btn btn-danger' onClick={() => eliminarProducto(producto)}>Eliminar</button>
             </div>
           </li>
         ))}
