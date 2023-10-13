@@ -6,6 +6,7 @@ const Checkout = ({ cart, calcularTotal, onCheckout }) => {
     const [email, setEmail] = useState('');
     const [direccion, setDireccion] = useState('');
     const [formSubmitted, setFormSubmitted] = useState(false); // Estado para rastrear el envío del formulario
+    const [orderId, setOrderId] = useState(null); // Estado para almacenar el ID de la orden
 
     const handleNameChange = (e) => {
         setName(e.target.value);
@@ -43,8 +44,8 @@ const Checkout = ({ cart, calcularTotal, onCheckout }) => {
         const ordersCollection = collection(db, "compras");
 
         try {
-            await addDoc(ordersCollection, order);
-            // Aquí puedes mostrar un mensaje de éxito o redirigir a una página de confirmación.
+            const docRef = await addDoc(ordersCollection, order);
+            setOrderId(docRef.id); // Almacenar el ID de la orden
         } catch (error) {
             console.error("Error al guardar el pedido:", error);
             // Aquí puedes mostrar un mensaje de error al usuario.
@@ -90,7 +91,7 @@ const Checkout = ({ cart, calcularTotal, onCheckout }) => {
                 </div>
                 <div className="text-center">
                     <button type="submit" className="btn btn-primary" disabled={formSubmitted}>
-                        {formSubmitted ? "Enviado" : "Finalizar Compra"}
+                        {formSubmitted ? `Enviado con ID: ${orderId}` : "Finalizar Compra"}
                     </button>
                 </div>
             </form>
