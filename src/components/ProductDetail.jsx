@@ -1,19 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import products from '../data/products';
 import "./Catalog.css";
+import { doc, getDoc, getFirestore } from "firebase/firestore";
 
 function ProductDetail() {
-  const { id: productId } = useParams();
+  // const { id: productId } = useParams();
 
+  const { id:productId } = useParams();
   const [product, setProduct] = useState(null);
-  
-  
 
   useEffect(() => {
+    const db = getFirestore();
+    const selectedProduct = doc(db, "reloj", productId); // Elimina las comillas alrededor de productId
 
-    const selectedProduct = products.find(p => p.id === parseInt(productId));
-    setProduct(selectedProduct);
+    getDoc(selectedProduct).then((snapshot) => {
+      if (snapshot.exists()) {
+        const productData = snapshot.data();
+        setProduct(productData);
+      }
+    });
   }, [productId]);
 
   if (!product) {
@@ -22,16 +27,16 @@ function ProductDetail() {
 
   return (
     <div>
-      <h4>{product.id}</h4> 
+      <h4>{product.id}</h4>
       <h2>Marca: {product.marca} </h2>
       <h3>Nombre: {product.name}</h3>
-      <h4>Precio: {product.precio}</h4>
+      <h4>Precio: $ {product.precio}</h4>
       <img
-           src={`/images/${product.imageFileName}`} // Ruta a la imagen
-           alt={product.name} // Texto alternativo para la imagen
-           width="300px" // Ancho de la imagen
-           height="300px" // Alto de la imagen
-       />
+        src={`/images/${product.foto}`}
+        alt={product.name}
+        width="300px"
+        height="300px"
+      />
     </div>
   );
 }

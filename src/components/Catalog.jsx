@@ -1,21 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useLocation, Link } from 'react-router-dom';
-import products from '../data/products';
+import { collection, getDocs, getFirestore, where, query } from "firebase/firestore";
 
-function Catalog({ carro, setCarro, actualizarCarroCount }) {
+const Catalog = ({ carro, setCarro, actualizarCarroCount }) => {
     const { id: categoryId } = useParams();
-    const { pathname } = useLocation();
+    const location = useLocation(); // Obtener la ubicación actual
 
-    const [filteredProducts, setFilteredProducts] = useState([]);
-
-    useEffect(() => {
-        if (pathname === '/' || !categoryId) {
-            setFilteredProducts(products);
-        } else {
-            const filtered = products.filter((product) => product.marca === categoryId);
-            setFilteredProducts(filtered);
-        }
-    }, [categoryId, pathname]);
+    const [productos, setProductos] = useState([]);
 
     const compraProds = (producto) => {
         const updatedCarro = [...carro];
@@ -35,26 +26,56 @@ function Catalog({ carro, setCarro, actualizarCarroCount }) {
         setCarro(updatedCarro);
     };
 
+
+    useEffect(() => {
+        const db = getFirestore();
+        const itemsCatalog = collection(db, "reloj");
+        
+        if (categoryId) {
+            // Si categoryId tiene un valor (por ejemplo, "Casio"), filtra por marca
+            const marcaFiltro = query(itemsCatalog, where("marca", "==", categoryId));
+            getDocs(marcaFiltro)
+                .then((snapshot) => {
+                    const docs = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+                    setProductos(docs);
+                })
+                .catch((error) => {
+                    console.error("Error al obtener productos:", error);
+                    // Puedes manejar el error aquí
+                });
+        } else {
+            // Sin categoryId, obtén todos los productos
+            getDocs(itemsCatalog)
+                .then((snapshot) => {
+                    const docs = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+                    setProductos(docs);
+                })
+                .catch((error) => {
+                    console.error("Error al obtener productos:", error);
+                    // Puedes manejar el error aquí
+                });
+        }
+    }, [categoryId, location.pathname]); // Añadir location.pathname como dependencia
+
     return (
         <div className='p-4 product-grid'>
-            {filteredProducts.map((product) => (
-                <div key={product.id}>
-                    Id: {product.id} =
-                    <Link to={`/item/${product.id}`}>{product.name}</Link>
+            {productos.map((p) => (
+                <li key={p.id}>
+                    <Link to={`/item/${p.id}`}>{p.name}</Link>
                     <img
-                        src={`./images/${product.imageFileName}`}
-                        alt={product.name}
+                        src={`./images/${p.foto}`}
+                        alt={p.name}
                         width="150"
                         height="150"
                     />
-                    <h3>${product.precio} </h3>
-                    <button onClick={() => compraProds(product)}>
-                        Comprar ({carro.find((item) => item.id === product.id)?.cantidad || 0})
+                    <h3>${p.precio}</h3>
+                    <button onClick={() => compraProds(p)}>
+                        Comprar ({carro.find((item) => item.id === p.id)?.cantidad || 0})
                     </button>
-                </div>
+                </li>
             ))}
         </div>
     );
-}
+};
 
 export default Catalog;
